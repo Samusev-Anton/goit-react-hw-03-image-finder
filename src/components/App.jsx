@@ -4,14 +4,22 @@ import ImageGallery from './imageGallery/imageGallery';
 import { SearchBar } from './Searchbar/Searchbar';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/loader';
+import { Modal } from './Modal/Modal';
 
 export class App extends React.Component {
   state = {
     searchName: '',
     backEnd: '',
+
     page: 1,
     error: null,
     status: 'idle',
+    largeImage: '',
+  };
+
+  handleImgClick = largeImageURL => {
+    // console.log(largeImageURL);
+    this.setState({ largeImage: largeImageURL });
   };
 
   handleLodeMore = event => {
@@ -68,7 +76,7 @@ export class App extends React.Component {
   }
 
   render() {
-    const { backEnd, page, error, status } = this.state;
+    const { backEnd, page, error, status, largeImage } = this.state;
     return (
       <>
         <SearchBar onSubmit={this.handleFormSubmit} />
@@ -77,12 +85,13 @@ export class App extends React.Component {
         {status === 'rejected' && <h1> {error.message} </h1>}
         {status === 'resolved' && (
           <>
-            <ImageGallery events={backEnd.hits} />
+            <ImageGallery events={backEnd.hits} picture={this.handleImgClick} />
             <Button
               totalHits={backEnd.totalHits}
               page={page}
               onIncrement={this.handleLodeMore}
             />
+            {largeImage && <Modal modalImage={largeImage.largeImageURL} />}
           </>
         )}
       </>
