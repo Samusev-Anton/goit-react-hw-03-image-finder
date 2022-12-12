@@ -1,12 +1,17 @@
 import React from 'react';
+import css from './ImageGallery.module.css';
 
 const ImageGallery = ({ events }) => {
   console.log(events);
   return (
-    <ul>
-      {events.map(({ id, userImageURL }) => (
-        <li key={id}>
-          <img src={userImageURL} alt="" />
+    <ul className={css.ImageGallery}>
+      {events.map(({ id, webformatURL }) => (
+        <li key={id} className={css.ImageGalleryItem}>
+          <img
+            src={webformatURL}
+            alt=""
+            className={css.ImageGalleryItemImage}
+          />
         </li>
       ))}
     </ul>

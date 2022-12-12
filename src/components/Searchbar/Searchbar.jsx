@@ -2,6 +2,8 @@
 import React from 'react';
 import { ImSearch } from 'react-icons/im';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import css from './SearchBar.module.css';
 
 export class SearchBar extends React.Component {
   state = {
@@ -25,20 +27,33 @@ export class SearchBar extends React.Component {
 
   render() {
     return (
-      <>
-        <form onSubmit={this.handleSubmit}>
+      <div className={css.Searchbar}>
+        <form className={css.SearchForm} onSubmit={this.handleSubmit}>
           <input
+            className={css.SearchFormInput}
             type="text"
             value={this.state.searchName}
             name="name"
             onChange={this.handleInputChange}
           />
-          <button type="submit">
+          <button className={css.SearchFormButton} type="submit">
             <ImSearch />
-            Search
+            <span className={css.SearchFormButtonLabel}>Search</span>
           </button>
         </form>
-      </>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+      </div>
     );
   }
 }
