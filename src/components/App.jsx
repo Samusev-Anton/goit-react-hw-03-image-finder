@@ -33,7 +33,11 @@ export class App extends React.Component {
     this.setState({ searchName });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  modalClose = () => {
+    this.setState({ largeImage: '' });
+  };
+
+  componentDidUpdate(_, prevState) {
     const { searchName, page } = this.state;
 
     if (prevState.searchName !== searchName) {
@@ -80,7 +84,9 @@ export class App extends React.Component {
     return (
       <>
         <SearchBar onSubmit={this.handleFormSubmit} />
-        {status === 'idle' && <h1>Введите текст для поиска</h1>}
+        {status === 'idle' && (
+          <h1 style={{ textAlign: 'center' }}>Введите текст для поиска</h1>
+        )}
         {status === 'pending' && <Loader />}
         {status === 'rejected' && <h1> {error.message} </h1>}
         {status === 'resolved' && (
@@ -91,7 +97,14 @@ export class App extends React.Component {
               page={page}
               onIncrement={this.handleLodeMore}
             />
-            {largeImage && <Modal modalImage={largeImage.largeImageURL} />}
+            {largeImage && (
+              <Modal onClose={this.modalClose}>
+                <img
+                  src={largeImage.largeImageURL}
+                  alt="тут должна быть картинка"
+                />
+              </Modal>
+            )}
           </>
         )}
       </>
