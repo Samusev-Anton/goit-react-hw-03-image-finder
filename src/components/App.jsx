@@ -6,6 +6,10 @@ import { Button } from './Button/Button';
 import { Loader } from './Loader/loader';
 import { Modal } from './Modal/Modal';
 
+const URL = 'https://pixabay.com/api/';
+const KEY_URL = '30760440-578eb64e9c4ff1eb66a65bfe8';
+const OPTIONS_URL = 'image_type=photo&orientation=horizontal&per_page=12';
+
 export class App extends React.Component {
   state = {
     searchName: '',
@@ -39,11 +43,16 @@ export class App extends React.Component {
 
   componentDidUpdate(_, prevState) {
     const { searchName, page } = this.state;
+    const newSearchName = prevState.searchName !== searchName;
+    const newPage = prevState.page !== page;
 
-    if (prevState.searchName !== searchName) {
+    if (newSearchName || newPage) {
       this.setState({ backEnd: '', status: 'pending' });
+      if (newSearchName) {
+        this.setState({ page: 1 });
+      }
       fetch(
-        ` https://pixabay.com/api/?q=${searchName}&page=${page}&key=30760440-578eb64e9c4ff1eb66a65bfe8&image_type=photo&orientation=horizontal&per_page=12 `
+        ` ${URL}?q=${searchName}&page=${page}&key=${KEY_URL}&${OPTIONS_URL} `
       )
         .then(responce => {
           if (responce.ok) {
@@ -59,24 +68,24 @@ export class App extends React.Component {
         )
         .catch(error => this.setState({ error, status: 'rejected' }));
     }
-    if (prevState.page !== page) {
-      this.setState({ status: 'pending' });
-      fetch(
-        ` https://pixabay.com/api/?q=${searchName}&page=${page}&key=30760440-578eb64e9c4ff1eb66a65bfe8&image_type=photo&orientation=horizontal&per_page=12 `
-      )
-        .then(responce => {
-          if (responce.ok) {
-            return responce.json();
-          }
-          return Promise.reject(
-            new Error(`Нет ничего соответствующего поиску ${searchName}`)
-          );
-        })
-        .then(backEnd =>
-          this.setState({ backEnd: backEnd, status: 'resolved' })
-        )
-        .catch(error => this.setState({ error, status: 'rejected' }));
-    }
+    // if (newPage) {
+    //   this.setState({ status: 'pending' });
+    //   fetch(
+    //     ` https://pixabay.com/api/?q=${searchName}&page=${page}&key=30760440-578eb64e9c4ff1eb66a65bfe8&image_type=photo&orientation=horizontal&per_page=12 `
+    //   )
+    //     .then(responce => {
+    //       if (responce.ok) {
+    //         return responce.json();
+    //       }
+    //       return Promise.reject(
+    //         new Error(`Нет ничего соответствующего поиску ${searchName}`)
+    //       );
+    //     })
+    //     .then(backEnd =>
+    //       this.setState({ backEnd: backEnd, status: 'resolved' })
+    //     )
+    //     .catch(error => this.setState({ error, status: 'rejected' }));
+    // }
   }
 
   render() {

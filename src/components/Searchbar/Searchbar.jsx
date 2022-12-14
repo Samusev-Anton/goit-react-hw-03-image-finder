@@ -11,17 +11,19 @@ export class SearchBar extends React.Component {
   };
 
   handleInputChange = event => {
-    this.setState({ searchName: event.currentTarget.value.toLowerCase() });
+    const newSearchName = event.currentTarget.value.toLowerCase();
+    this.setState({ searchName: newSearchName });
   };
 
   handleSubmit = event => {
+    const { searchName } = this.state;
     event.preventDefault();
 
-    if (this.state.searchName.trim() === '') {
+    if (searchName.trim() === '') {
       toast.error('введите данные для поиска');
       return;
     }
-    this.props.onSubmit(this.state.searchName);
+    this.props.onSubmit(searchName);
     this.setState({ searchName: '' });
   };
 
