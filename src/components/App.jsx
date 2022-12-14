@@ -1,12 +1,12 @@
 import React from 'react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './imageGallery/imageGallery';
 import { SearchBar } from './Searchbar/Searchbar';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/loader';
 import { Modal } from './Modal/Modal';
 import { fetchSearch } from './Api';
-import 'react-toastify/dist/ReactToastify.css';
 
 // const URL = 'https://pixabay.com/api/';
 // const KEY_URL = '30760440-578eb64e9c4ff1eb66a65bfe8';
@@ -23,7 +23,7 @@ export class App extends React.Component {
   };
 
   handleImgClick = largeImageURL => {
-    // console.log(largeImageURL);
+    console.log(largeImageURL);
     this.setState({ largeImage: largeImageURL });
   };
 
@@ -55,14 +55,14 @@ export class App extends React.Component {
 
       try {
         const responce = await fetchSearch(searchName, page);
-        this.setState({ backEnd: responce, status: 'resolved' });
-
-        console.log(responce);
+        this.setState({ backEnd: responce });
       } catch (error) {
         this.setState({
           status: 'rejected',
         });
         toast.error('Что-то пошло не так, попробуйте перезагрузить страницу');
+      } finally {
+        this.setState({ status: 'resolved' });
       }
     }
   }
@@ -108,7 +108,11 @@ export class App extends React.Component {
         {status === 'rejected' && <h1> {error} </h1>}
         {status === 'resolved' && (
           <>
-            <ImageGallery events={backEnd.hits} picture={this.handleImgClick} />
+            <ImageGallery
+              status={status}
+              events={backEnd.hits}
+              picture={this.handleImgClick}
+            />
             <Button
               totalHits={backEnd.totalHits}
               page={page}

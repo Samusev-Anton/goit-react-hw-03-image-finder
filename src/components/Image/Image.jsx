@@ -3,13 +3,7 @@ import css from './Image.module.css';
 
 const Image = ({ webformatURL, user }) => {
   return (
-    <>
-      <img
-        src={webformatURL}
-        alt={user}
-        className={css.ImageGalleryItemImage}
-      />
-    </>
+    <img src={webformatURL} alt={user} className={css.ImageGalleryItemImage} />
   );
 };
 
