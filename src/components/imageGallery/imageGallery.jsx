@@ -1,5 +1,6 @@
 import React from 'react';
 import css from './ImageGallery.module.css';
+import Image from 'components/Image/Image';
 
 const ImageGallery = ({ events, picture }) => {
   // console.log(events);
@@ -7,11 +8,9 @@ const ImageGallery = ({ events, picture }) => {
     <ul className={css.ImageGallery}>
       {events.map(({ id, webformatURL, user, largeImageURL }) => (
         <li key={id} className={css.ImageGalleryItem}>
-          <img
-            id={id}
-            src={webformatURL}
-            alt={user}
-            className={css.ImageGalleryItemImage}
+          <Image
+            webformatURL={webformatURL}
+            user={user}
             onClick={() => picture({ largeImageURL })}
           />
         </li>
